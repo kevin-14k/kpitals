@@ -46,9 +46,9 @@ Give an example
 
 Add additional notes about how to deploy this on a live system
 
-## Contributing
+## External libs
 
-Please read [CONTRIBUTING.md] for details on our code of conduct, and the process for submitting pull requests to us.
+github.com/gorilla/mux
 
 ## Authors
 
