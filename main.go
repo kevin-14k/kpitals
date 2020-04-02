@@ -1,14 +1,15 @@
 package main
 
 import (
-	//"fmt"
 	"log"
 	"net/http"
 	"encoding/json"
 	"github.com/gorilla/mux"
 )
 
-// ----------
+// ---------------------------------------------------------------------------------------
+// Data
+// ---------------------------------------------------------------------------------------
 
 type Kpital struct {
 	Country string `json:"Country"`
@@ -17,24 +18,71 @@ type Kpital struct {
 
 type Kpitals []Kpital
 
-// ----------
+// ---------------------------------------------------------------------------------------
+// Endpoints
+// ---------------------------------------------------------------------------------------
 
+// "/kpitals/all"
 func kpitals(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+
 	json.NewEncoder(w).Encode(allKpitals())
 }
+
+
+// "/kpitals/city/{country}"
+func CityHandler(w http.ResponseWriter, r *http.Request) {
+	vars    := mux.Vars(r)
+	country := vars["country"]
+
+	w.WriteHeader(http.StatusOK)
+
+	for _, v := range allKpitals() {		
+    	if v.Country == country {
+        	json.NewEncoder(w).Encode(v.City)
+    	}
+	}
+}
+
+// "/kpitals/country/{city}"
+func CountryHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	city := vars["city"]
+
+	w.WriteHeader(http.StatusOK)
+	
+	for _, v := range allKpitals() {		
+    	if v.City == city {
+        	json.NewEncoder(w).Encode(v.Country)
+    	}
+	}
+}
+
+
+// ---------------------------------------------------------------------------------------
+// Rooting
+// ---------------------------------------------------------------------------------------
 
 func handleRequests() {
 	myRouter := mux.NewRouter().StrictSlash(true)
 
-	myRouter.HandleFunc("/kpitals", kpitals).Methods("GET")
+	myRouter.HandleFunc("/kpitals/all", kpitals).Methods("GET")
+	myRouter.HandleFunc("/kpitals/country/{city}", CountryHandler).Methods("GET")
+	myRouter.HandleFunc("/kpitals/city/{country}", CityHandler).Methods("GET")
 	log.Fatal(http.ListenAndServe(":8081", myRouter))
 }
+
+// ---------------------------------------------------------------------------------------
+// -
+// ---------------------------------------------------------------------------------------
 
 func main() {
 	handleRequests()
 }
 
-// ---------
+// ---------------------------------------------------------------------------------------
+// LDB
+// ---------------------------------------------------------------------------------------
 
 func allKpitals() Kpitals {
 	return Kpitals{
