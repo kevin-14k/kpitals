@@ -1,8 +1,11 @@
 package main
 
 import (
+	"log"
 	"net/http"
+	"os"
 	"encoding/json"
+
 	"github.com/gorilla/mux"
 )
 
@@ -57,10 +60,10 @@ func CountryHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func two(w http.ResponseWriter, r *http.Request) {
+func Two(w http.ResponseWriter, r *http.Request) {
+	log.Print("2")
 	w.WriteHeader(http.StatusOK)
-
-	json.NewEncoder(w).Encode(allKpitals())
+	json.NewEncoder(w).Encode(allKpitals())	
 }
 
 
@@ -83,6 +86,13 @@ func handleRequests() {
 // ---------------------------------------------------------------------------------------
 
 func main() {
+	port := os.Getenv("PORT")
+
+	if port == "" {
+		log.Fatal("$PORT must be set")
+	}
+
+	log.Print("Hello")
 	handleRequests()
 }
 
