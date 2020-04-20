@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"net/http"
 	"encoding/json"
 	"github.com/gorilla/mux"
@@ -70,13 +69,13 @@ func two(w http.ResponseWriter, r *http.Request) {
 // ---------------------------------------------------------------------------------------
 
 func handleRequests() {
-	myRouter := mux.NewRouter().StrictSlash(true)
+	r := mux.NewRouter().StrictSlash(true)
 
-	myRouter.HandleFunc("/", two).Methods("GET")
-	myRouter.HandleFunc("/kpitals/all", kpitals).Methods("GET")
-	myRouter.HandleFunc("/kpitals/country/{city}", CountryHandler).Methods("GET")
-	myRouter.HandleFunc("/kpitals/city/{country}", CityHandler).Methods("GET")
-	log.Fatal(http.ListenAndServe(":8081", myRouter))
+	r.HandleFunc("/", two).Methods("GET")
+	r.HandleFunc("/kpitals/all", kpitals).Methods("GET")
+	r.HandleFunc("/kpitals/country/{city}", CountryHandler).Methods("GET")
+	r.HandleFunc("/kpitals/city/{country}", CityHandler).Methods("GET")
+	http.Handle("/", r)
 }
 
 // ---------------------------------------------------------------------------------------
