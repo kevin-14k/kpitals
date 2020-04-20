@@ -37,7 +37,7 @@ func CityHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 
-	for _, v := range allKpitals() {		
+	for _, v := range allKpitals() {
     	if v.Country == country {
         	json.NewEncoder(w).Encode(v.City)
     	}
@@ -51,7 +51,7 @@ func CountryHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	
-	for _, v := range allKpitals() {		
+	for _, v := range allKpitals() {
     	if v.City == city {
         	json.NewEncoder(w).Encode(v.Country)
     	}
