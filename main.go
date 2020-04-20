@@ -58,6 +58,12 @@ func CountryHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func two(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+
+	json.NewEncoder(w).Encode(allKpitals())
+}
+
 
 // ---------------------------------------------------------------------------------------
 // Rooting
@@ -66,6 +72,7 @@ func CountryHandler(w http.ResponseWriter, r *http.Request) {
 func handleRequests() {
 	myRouter := mux.NewRouter().StrictSlash(true)
 
+	myRouter.HandleFunc("/", two).Methods("GET")
 	myRouter.HandleFunc("/kpitals/all", kpitals).Methods("GET")
 	myRouter.HandleFunc("/kpitals/country/{city}", CountryHandler).Methods("GET")
 	myRouter.HandleFunc("/kpitals/city/{country}", CityHandler).Methods("GET")
