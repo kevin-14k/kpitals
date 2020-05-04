@@ -85,13 +85,14 @@ func handleRequests() {
 // ---------------------------------------------------------------------------------------
 
 func main() {
+	log.Fatal("Hello")
 	port := os.Getenv("PORT")
 
 	if port == "" {
 		log.Fatal("$PORT must be set")
 	}
 
-	
+
 	handleRequests()
 }
 
