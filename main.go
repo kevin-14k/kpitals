@@ -31,16 +31,13 @@ func kpitals() {
 
 
 // "/kpitals/city/{country}"
-func CityHandler(w http.ResponseWriter, r *http.Request) {
-	//country := vars["country"]
-
-	//w.WriteHeader(http.StatusOK)
-
-	//for _, v := range allKpitals() {
-    //	if v.Country == country {
-    //    	json.NewEncoder(w).Encode(v.City)
-  	//	}
-	//}
+func CityHandler(city string) string {
+	for _, v := range allKpitals() {
+   		if v.City == city {
+   			return v.Country
+   		}
+	}
+	return "Not found"
 }
 
 // "/kpitals/country/{city}"
