@@ -85,7 +85,7 @@ func handleRequests() {
 // ---------------------------------------------------------------------------------------
 
 func main() {
-	log.Message("Hello")
+	log.Print("Hello")
 	port := os.Getenv("PORT")
 
 	if port == "" {
