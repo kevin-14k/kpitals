@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"encoding/json"
+	//"encoding/json"
 
 	"github.com/gin-gonic/gin"
 )
@@ -26,7 +26,7 @@ type Kpitals []Kpital
 
 // "/kpitals/all"
 func kpitals() {
-	json.Encode(allKpitals())
+	allKpitals()
 }
 
 
@@ -44,36 +44,37 @@ func CityHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // "/kpitals/country/{city}"
-func CountryHandler(w http.ResponseWriter, r *http.Request) {
-	//city := vars["city"]
-
-	//w.WriteHeader(http.StatusOK)
-	
-	//for _, v := range allKpitals() {
-   // 	if v.City == city {
-   //     	json.NewEncoder(w).Encode(v.Country)
-   // 	}
-	//}
+func CountryHandler(country string) string {
+	for _, v := range allKpitals() {
+   		if v.Country == country {
+   			return v.City
+   		}
+	}
+	return "Not found"
 }
-
-func homepage(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(allKpitals())	
-}
-
 
 // ---------------------------------------------------------------------------------------
 // Rooting
 // ---------------------------------------------------------------------------------------
 
-func handleRequests() {
-	//r := mux.NewRouter().StrictSlash(true)
+func handleRequests(r *gin.Engine) {
+	r.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.tmpl.html", nil)
+	})
 
-	//r.HandleFunc("/", homepage).Methods("GET")
-	//r.HandleFunc("/kpitals/all", kpitals).Methods("GET")
-	//r.HandleFunc("/kpitals/country/{city}", CountryHandler).Methods("GET")
-	//r.HandleFunc("/kpitals/city/{country}", CityHandler).Methods("GET")
-	//http.Handle("/", r)
+	r.GET("/all", func(c *gin.Context) {
+		c.JSON(200, allKpitals())
+	})
+
+	r.GET("/country/:country", func(c *gin.Context) {
+		country := c.Param("country")
+		c.JSON(200, CountryHandler(country))
+	})
+
+	r.GET("/city/:city", func(c *gin.Context) {
+		city := c.Param("city")
+		c.JSON(200, CityHandler(city))
+	})
 }
 
 // ---------------------------------------------------------------------------------------
@@ -83,7 +84,7 @@ func handleRequests() {
 func main() {
 	port := os.Getenv("PORT")
 
-	if port == "" {
+	if port == "" && false {
 		log.Fatal("$PORT must be set")
 	}
 
@@ -91,16 +92,8 @@ func main() {
 	router.Use(gin.Logger())
 	router.LoadHTMLGlob("templates/*.tmpl.html")
 	router.Static("/static", "static")
-
-	router.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.tmpl.html", nil)
-	})
-
-	r.GET("/all", func(c *gin.Context) {
-		c.JSON(200, kpitals())
-	})
-
-	router.Run(":" + port)
+	handleRequests(router)
+	router.Run()
 }
 
 // ---------------------------------------------------------------------------------------
