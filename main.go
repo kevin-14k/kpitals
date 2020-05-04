@@ -98,6 +98,10 @@ func main() {
 		c.HTML(http.StatusOK, "index.tmpl.html", nil)
 	})
 
+	r.GET("/all", func(c *gin.Context) {
+		c.JSON(200, kpitals})
+	})
+
 	router.Run(":" + port)
 }
 
