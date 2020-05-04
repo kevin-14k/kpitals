@@ -99,7 +99,7 @@ func main() {
 	})
 
 	r.GET("/all", func(c *gin.Context) {
-		c.JSON(200, kpitals})
+		c.JSON(200, kpitals())
 	})
 
 	router.Run(":" + port)
