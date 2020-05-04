@@ -34,30 +34,28 @@ func kpitals(w http.ResponseWriter, r *http.Request) {
 
 // "/kpitals/city/{country}"
 func CityHandler(w http.ResponseWriter, r *http.Request) {
-	vars    := mux.Vars(r)
-	country := vars["country"]
+	//country := vars["country"]
 
-	w.WriteHeader(http.StatusOK)
+	//w.WriteHeader(http.StatusOK)
 
-	for _, v := range allKpitals() {
-    	if v.Country == country {
-        	json.NewEncoder(w).Encode(v.City)
-    	}
-	}
+	//for _, v := range allKpitals() {
+    //	if v.Country == country {
+    //    	json.NewEncoder(w).Encode(v.City)
+  	//	}
+	//}
 }
 
 // "/kpitals/country/{city}"
 func CountryHandler(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	city := vars["city"]
+	//city := vars["city"]
 
-	w.WriteHeader(http.StatusOK)
+	//w.WriteHeader(http.StatusOK)
 	
-	for _, v := range allKpitals() {
-    	if v.City == city {
-        	json.NewEncoder(w).Encode(v.Country)
-    	}
-	}
+	//for _, v := range allKpitals() {
+   // 	if v.City == city {
+   //     	json.NewEncoder(w).Encode(v.Country)
+   // 	}
+	//}
 }
 
 func homepage(w http.ResponseWriter, r *http.Request) {
