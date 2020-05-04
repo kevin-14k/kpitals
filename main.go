@@ -25,10 +25,8 @@ type Kpitals []Kpital
 // ---------------------------------------------------------------------------------------
 
 // "/kpitals/all"
-func kpitals(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
-
-	json.NewEncoder(w).Encode(allKpitals())
+func kpitals() {
+	json.Encode(allKpitals())
 }
 
 
