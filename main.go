@@ -6,7 +6,7 @@ import (
 	"os"
 	"encoding/json"
 
-	"github.com/gorilla/mux"
+	"github.com/gin-gonic/gin"
 )
 
 // ---------------------------------------------------------------------------------------
@@ -71,13 +71,13 @@ func homepage(w http.ResponseWriter, r *http.Request) {
 // ---------------------------------------------------------------------------------------
 
 func handleRequests() {
-	r := mux.NewRouter().StrictSlash(true)
+	//r := mux.NewRouter().StrictSlash(true)
 
-	r.HandleFunc("/", homepage).Methods("GET")
-	r.HandleFunc("/kpitals/all", kpitals).Methods("GET")
-	r.HandleFunc("/kpitals/country/{city}", CountryHandler).Methods("GET")
-	r.HandleFunc("/kpitals/city/{country}", CityHandler).Methods("GET")
-	http.Handle("/", r)
+	//r.HandleFunc("/", homepage).Methods("GET")
+	//r.HandleFunc("/kpitals/all", kpitals).Methods("GET")
+	//r.HandleFunc("/kpitals/country/{city}", CountryHandler).Methods("GET")
+	//r.HandleFunc("/kpitals/city/{country}", CityHandler).Methods("GET")
+	//http.Handle("/", r)
 }
 
 // ---------------------------------------------------------------------------------------
@@ -85,15 +85,22 @@ func handleRequests() {
 // ---------------------------------------------------------------------------------------
 
 func main() {
-	log.Print("Hello")
 	port := os.Getenv("PORT")
 
 	if port == "" {
 		log.Fatal("$PORT must be set")
 	}
 
+	router := gin.New()
+	router.Use(gin.Logger())
+	router.LoadHTMLGlob("templates/*.tmpl.html")
+	router.Static("/static", "static")
 
-	handleRequests()
+	router.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.tmpl.html", nil)
+	})
+
+	router.Run(":" + port)
 }
 
 // ---------------------------------------------------------------------------------------
