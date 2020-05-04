@@ -60,8 +60,7 @@ func CountryHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func Two(w http.ResponseWriter, r *http.Request) {
-	log.Print("2")
+func homepage(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(allKpitals())	
 }
@@ -74,7 +73,7 @@ func Two(w http.ResponseWriter, r *http.Request) {
 func handleRequests() {
 	r := mux.NewRouter().StrictSlash(true)
 
-	r.HandleFunc("/", two).Methods("GET")
+	r.HandleFunc("/", homepage).Methods("GET")
 	r.HandleFunc("/kpitals/all", kpitals).Methods("GET")
 	r.HandleFunc("/kpitals/country/{city}", CountryHandler).Methods("GET")
 	r.HandleFunc("/kpitals/city/{country}", CityHandler).Methods("GET")
@@ -92,7 +91,7 @@ func main() {
 		log.Fatal("$PORT must be set")
 	}
 
-	log.Print("Hello")
+	
 	handleRequests()
 }
 
