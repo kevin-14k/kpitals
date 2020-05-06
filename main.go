@@ -4,13 +4,11 @@ import (
 	"log"
 	"net/http"
 	"os"
-	//"encoding/json"
-
 	"github.com/gin-gonic/gin"
 )
 
 // ---------------------------------------------------------------------------------------
-// Data
+// Datastruct
 // ---------------------------------------------------------------------------------------
 
 type Kpital struct {
@@ -79,12 +77,6 @@ func handleRequests(r *gin.Engine) {
 // ---------------------------------------------------------------------------------------
 
 func main() {
-	port := os.Getenv("PORT")
-
-	if port == "" && false {
-		log.Fatal("$PORT must be set")
-	}
-
 	router := gin.New()
 	router.Use(gin.Logger())
 	router.LoadHTMLGlob("templates/*.tmpl.html")
